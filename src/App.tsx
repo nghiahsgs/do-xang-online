@@ -15,19 +15,35 @@ type VehicleType = {
   description: string;
 };
 
+const FUEL_PRICE_LAST_UPDATED = '15:00 25/03/2026';
+
 const fuelTypes: FuelType[] = [
-  { name: 'Xăng RON 95-III', price: 33840, color: 'bg-red-500', icon: '⛽' },
-  { name: 'Xăng E5 RON 92', price: 30110, color: 'bg-orange-500', icon: '🔥' },
-  { name: 'Dầu Diesel', price: 39660, color: 'bg-yellow-600', icon: '💨' },
+  { name: 'Xăng RON 95-III', price: 29950, color: 'bg-red-500', icon: '⛽' },
+  { name: 'Xăng E5 RON 92', price: 28070, color: 'bg-orange-500', icon: '🔥' },
+  { name: 'Dầu Diesel', price: 37890, color: 'bg-yellow-600', icon: '💨' },
 ];
 
 const vehicleTypes: VehicleType[] = [
+  // Xe tay ga
   { name: 'Air Blade', tankSize: 5.5, icon: '🛵', description: 'Xe tay ga phổ thông' },
-  { name: 'Vision', tankSize: 5.2, icon: '🏍️', description: 'Xe tay ga nhỏ gọn' },
-  { name: 'Winner X', tankSize: 4.5, icon: '🏍️', description: 'Xe số thể thao' },
+  { name: 'Vision', tankSize: 5.2, icon: '🛵', description: 'Xe tay ga nhỏ gọn' },
   { name: 'SH Mode', tankSize: 5.5, icon: '🛵', description: 'Xe tay ga cao cấp' },
-  { name: 'Wave Alpha', tankSize: 4.0, icon: '🏍️', description: 'Xe số tiết kiệm' },
+  { name: 'SH 150i', tankSize: 7.1, icon: '🛵', description: 'Xe tay ga sang chảnh' },
+  { name: 'Lead 125', tankSize: 6.0, icon: '🛵', description: 'Xe tay ga thanh lịch' },
+  { name: 'Vario 160', tankSize: 5.5, icon: '🛵', description: 'Xe tay ga thể thao' },
+  { name: 'Janus', tankSize: 4.2, icon: '🛵', description: 'Xe tay ga nữ tính' },
+  { name: 'NVX 155', tankSize: 6.6, icon: '🛵', description: 'Xe tay ga mạnh mẽ' },
+  // Xe số
+  { name: 'Winner X', tankSize: 4.5, icon: '🏍️', description: 'Xe số thể thao' },
+  { name: 'Wave Alpha', tankSize: 3.7, icon: '🏍️', description: 'Xe số tiết kiệm' },
+  { name: 'Wave RSX', tankSize: 3.7, icon: '🏍️', description: 'Xe số trẻ trung' },
+  { name: 'Sirius', tankSize: 4.2, icon: '🏍️', description: 'Xe số bền bỉ' },
+  { name: 'Exciter 155', tankSize: 5.4, icon: '🏍️', description: 'Xe côn tay đua' },
+  { name: 'Raider 150', tankSize: 5.0, icon: '🏍️', description: 'Xe côn tay Suzuki' },
+  // Ô tô
   { name: 'Ô tô', tankSize: 50, icon: '🚗', description: 'Xe hơi 4 bánh' },
+  // Easter egg
+  { name: 'Xe đạp', tankSize: 0, icon: '🚲', description: 'Chạy bằng cơm, không cần xăng 😂' },
 ];
 
 function App() {
@@ -65,7 +81,7 @@ function App() {
 
   useEffect(() => {
     setTotalCost(liters * selectedFuel.price);
-    setFillLevel((liters / selectedVehicle.tankSize) * 100);
+    setFillLevel(selectedVehicle.tankSize > 0 ? (liters / selectedVehicle.tankSize) * 100 : 0);
   }, [liters, selectedFuel.price, selectedVehicle.tankSize]);
 
   const handleStartStop = () => {
@@ -124,7 +140,7 @@ function App() {
                       <div className="font-semibold">{vehicle.name}</div>
                       <div className="text-xs text-slate-300">{vehicle.description}</div>
                     </div>
-                    <div className="text-sm font-bold">{vehicle.tankSize}L</div>
+                    <div className="text-sm font-bold">{vehicle.tankSize > 0 ? `${vehicle.tankSize}L` : '♾️'}</div>
                   </div>
                 </button>
               ))}
@@ -167,7 +183,7 @@ function App() {
               </div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-slate-400">Dung tích bình:</span>
-                <span className="text-blue-400 font-bold">{selectedVehicle.tankSize} lít</span>
+                <span className="text-blue-400 font-bold">{selectedVehicle.tankSize > 0 ? `${selectedVehicle.tankSize} lít` : 'Không có bình xăng 😅'}</span>
               </div>
               <div className="border-t border-slate-700 my-3"></div>
               <div className="flex items-center justify-between mb-4">
@@ -188,7 +204,7 @@ function App() {
             <div className="flex gap-4">
               <button
                 onClick={handleStartStop}
-                disabled={liters >= selectedVehicle.tankSize}
+                disabled={selectedVehicle.tankSize === 0 || liters >= selectedVehicle.tankSize}
                 className={`flex-1 py-4 px-6 rounded-xl font-bold text-lg transition-all transform hover:scale-105 ${
                   isPumping
                     ? 'bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/50'
@@ -265,7 +281,7 @@ function App() {
 
               <div className="mt-4 text-center">
                 <p className="text-slate-400 text-lg">
-                  {isPumping ? '⚡ Đang đổ xăng...' : liters >= selectedVehicle.tankSize ? '✅ Đổ đầy rồi!' : '⏸️ Chờ bắt đầu'}
+                  {selectedVehicle.tankSize === 0 ? '🚲 Xe đạp chạy bằng cơm thôi bạn ơi!' : isPumping ? '⚡ Đang đổ xăng...' : liters >= selectedVehicle.tankSize ? '✅ Đổ đầy rồi!' : '⏸️ Chờ bắt đầu'}
                 </p>
               </div>
             </div>
@@ -274,7 +290,7 @@ function App() {
 
         <div className="mt-6 text-center">
           <p className="text-slate-500 text-sm mb-2">💡 Mẹo: Đây chỉ là web giải trí, xăng thật vẫn phải ra trạm đổ nhé!</p>
-          <p className="text-slate-600 text-xs">Giá xăng cập nhật ngày 25/03/2026 theo thị trường Việt Nam</p>
+          <p className="text-sm font-medium text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-full">🕐 Cập nhật giá lúc {FUEL_PRICE_LAST_UPDATED} — Petrolimex</p>
         </div>
       </div>
     </div>
