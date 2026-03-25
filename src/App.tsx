@@ -274,7 +274,7 @@ function App() {
 
         <div className="mt-6 text-center">
           <p className="text-slate-500 text-sm mb-2">💡 Mẹo: Đây chỉ là web giải trí, xăng thật vẫn phải ra trạm đổ nhé!</p>
-          <p className="text-slate-600 text-xs">Giá xăng cập nhật theo thị trường Việt Nam tháng 3/2026</p>
+          <p className="text-slate-600 text-xs">Giá xăng cập nhật ngày 25/03/2026 theo thị trường Việt Nam</p>
         </div>
       </div>
     </div>
