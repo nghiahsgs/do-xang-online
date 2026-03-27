@@ -15,12 +15,12 @@ type VehicleType = {
   description: string;
 };
 
-const FUEL_PRICE_LAST_UPDATED = '15:00 25/03/2026';
+const FUEL_PRICE_LAST_UPDATED = '00:00 27/03/2026';
 
 const fuelTypes: FuelType[] = [
-  { name: 'Xăng RON 95-III', price: 29950, color: 'bg-red-500', icon: '⛽' },
-  { name: 'Xăng E5 RON 92', price: 28070, color: 'bg-orange-500', icon: '🔥' },
-  { name: 'Dầu Diesel', price: 37890, color: 'bg-yellow-600', icon: '💨' },
+  { name: 'Xăng RON 95-III', price: 24330, color: 'bg-red-500', icon: '⛽' },
+  { name: 'Xăng E5 RON 92', price: 23320, color: 'bg-orange-500', icon: '🔥' },
+  { name: 'Dầu Diesel', price: 35640, color: 'bg-yellow-600', icon: '💨' },
 ];
 
 const vehicleTypes: VehicleType[] = [
